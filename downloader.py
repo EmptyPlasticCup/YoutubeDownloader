@@ -2,7 +2,7 @@ import PySimpleGUI as sg
 from pytube import YouTube
 import os.path
 
-sg.theme('DarkAmber') #can be any theme
+sg.theme('LightBlue1') #can be any theme
 
 #variables
 layoutInput = [
@@ -20,34 +20,55 @@ layoutSuccess = [
 
 ]
 
-windowInput = sg.Window('Video Downloader', layoutInput, size = (500,100))
-windowOutput = sg.Window('Success!', layoutSuccess, size = (500,100))
+layoutFail = [
 
-appCancelled = True
+    [sg.Text('We got an error! Please check the URL and the file path again.')],
+    [sg.Button('Quit')]
+]
+
+success = False
 
 #code
 
+window = sg.Window('Video Downloader', layoutInput, size = (500,100))
+
 while True:
-    event, values = windowInput.read()
+    event, values = window.read()
 
-    if event == sg.WIN_CLOSED or event == 'Quit':
-        break
-    elif event == 'Enter':
-        source = YouTube(str(values[0]))
-        path = str(values[1])
+    try:
 
-        source.streams.get_highest_resolution().download(path)
-        windowInput.close
-        appCancelled = False
-        break
+        if event == sg.WIN_CLOSED or event == 'Quit':
+            break
+        elif event == 'Enter':
 
-if not appCancelled:
+           url = str(values[0])
+
+           source = YouTube(url)
+           path = str(values[1])
+
+           source.streams.get_highest_resolution().download(path)
+           window.hide()
+           success = True
+           break
+
+    except:
+        window.hide()
+        window = sg.Window('Error!', layoutFail, size = (500,100),)
+
+        if event == sg.WIN_CLOSED or event == 'Quit':
+            break
+
+
+
+if success:
+
+    window = sg.Window('Success!', layoutSuccess, size = (500,100))
+
     while True:
-        event, values = windowOutput.read()
+        event, values = window.read()
 
-        if event == sg.WINDOW_CLOSED or event == 'Exit':
+        if event == sg.WIN_CLOSED or event == 'Exit':
              break
 
 
-windowInput.close()
-windowOutput.close()
+window.close()
