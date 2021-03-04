@@ -1,6 +1,6 @@
 import PySimpleGUI as sg 
 from pytube import YouTube
-import os.path
+
 
 sg.theme('LightBlue1') #can be any theme
 
@@ -10,6 +10,13 @@ layoutInput = [
     [sg.Text('URL:'), sg.InputText()],
     [sg.Text('Video Destination:'), sg.InputText(), sg.FolderBrowse()],
     [sg.Button('Enter'), sg.Button('Quit')]
+
+]
+
+layoutFileSelection = [
+
+    [sg.Text('Choose File Format')],
+    [sg.Button('mp3'), sg.Button('mp4')]
 
 ]
 
@@ -24,13 +31,14 @@ layoutFail = [
 
     [sg.Text('We got an error! Please check the URL and the file path again.')],
     [sg.Button('Quit')]
+
 ]
 
 success = False
 
 #code
 
-window = sg.Window('Video Downloader', layoutInput, size = (500,100))
+window = sg.Window('Video Downloader', layoutInput, size = (700,100))
 
 while True:
     event, values = window.read()
@@ -43,12 +51,11 @@ while True:
 
            url = str(values[0])
 
-           source = YouTube(url)
+           video = YouTube(url)
            path = str(values[1])
 
-           source.streams.get_highest_resolution().download(path)
            window.hide()
-           success = True
+           validCheck = True
            break
 
     except:
@@ -56,6 +63,26 @@ while True:
         window = sg.Window('Error!', layoutFail, size = (500,100),)
 
         if event == sg.WIN_CLOSED or event == 'Quit':
+            break
+
+if validCheck:
+    window = sg.Window('File Format', layoutFileSelection, size = (500,100))
+
+    while True:
+        event, values = window.read()
+
+        if event == sg.WIN_CLOSED:
+            break
+        elif event == 'mp3':
+            video.streams.filter(only_audio=True).first().download(path)
+
+            window.hide()
+            success = True
+            break
+        elif event == 'mp4':
+            video.streams.get_highest_resolution().download(path)
+            window.hide()
+            success = True
             break
 
 
