@@ -16,7 +16,7 @@ layoutInput = [
 layoutFileSelection = [
 
     [sg.Text('Choose File Format')],
-    [sg.Button('mp3'), sg.Button('mp4')]
+    [sg.Button('audio'), sg.Button('video')]
 
 ]
 
@@ -73,13 +73,13 @@ if validCheck:
 
         if event == sg.WIN_CLOSED:
             break
-        elif event == 'mp3':
+        elif event == 'audio':
             video.streams.filter(only_audio=True).first().download(path)
 
             window.hide()
             success = True
             break
-        elif event == 'mp4':
+        elif event == 'video':
             video.streams.get_highest_resolution().download(path)
             window.hide()
             success = True
