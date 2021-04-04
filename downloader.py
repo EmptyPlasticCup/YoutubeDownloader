@@ -1,5 +1,6 @@
 import PySimpleGUI as sg 
 from pytube import YouTube
+import pafy
 
 
 sg.theme('LightBlue1') #can be any theme
@@ -16,7 +17,7 @@ layoutInput = [
 layoutFileSelection = [
 
     [sg.Text('Choose File Format')],
-    [sg.Button('audio'), sg.Button('video')]
+    [sg.Button('Audio'), sg.Button('Video')]
 
 ]
 
@@ -73,13 +74,13 @@ if validCheck:
 
         if event == sg.WIN_CLOSED:
             break
-        elif event == 'audio':
-            video.streams.filter(only_audio=True).first().download(path)
+        elif event == 'Audio':
+            pafy.new(url).getbestaudio().download(filepath = path)
 
             window.hide()
             success = True
             break
-        elif event == 'video':
+        elif event == 'Video':
             video.streams.get_highest_resolution().download(path)
             window.hide()
             success = True
