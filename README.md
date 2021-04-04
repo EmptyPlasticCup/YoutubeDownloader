@@ -1,6 +1,6 @@
 # YoutubeDownloader
-A simple python scripy with gui that downloads a youtube video.
 
-Can either download video or audio only (saves as mp4 regardless)
+A simple python script that downloads a youtube video to a selected path, either as audio(.ogg /.m4a) or video(.mp4).
 
-needs pysimplegui and pytube modules to work.
+You require PySimpleGui, PyTube and Pafy to run the code.
+You can also just use the exe file.
