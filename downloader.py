@@ -75,7 +75,7 @@ if validCheck:
         if event == sg.WIN_CLOSED:
             break
         elif event == 'Audio':
-            pafy.new(url).getbestaudio().download(filepath = path)
+            pafy.new(url).getbestaudio(preftype='m4a', ftypestrict='True').download(filepath = path)
 
             window.hide()
             success = True
